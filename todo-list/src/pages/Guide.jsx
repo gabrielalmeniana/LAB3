@@ -59,7 +59,7 @@ function Guide() {
         </h1>
 
         <p className="text-gray-400">
-          Everything you need to know about using TaskFlow.
+          Everything you need to know about using YourTask.
         </p>
       </div>
 
@@ -70,11 +70,11 @@ function Guide() {
         </div>
 
         <h2 className="mb-3 text-xl font-bold text-white">
-          Welcome to TaskFlow!
+          Welcome to YourTask!
         </h2>
 
         <p className="max-w-3xl leading-relaxed text-gray-300">
-          TaskFlow helps you organize your activities, manage
+          YourTask helps you organize your activities, manage
           tasks across different groups, and track your progress.
           Follow the steps below to get started.
         </p>

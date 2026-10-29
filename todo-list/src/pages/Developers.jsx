@@ -2,10 +2,10 @@
 import { Link } from 'react-router-dom'
 
 function Developers() {
-  // Replace these with your actual group members
+  // GROUP MEMBERS
   const developers = [
     {
-      name: 'HANNA BALBIN',
+      name: 'HANNA ELIZABETH BALBIN',
       role: 'React Setup & Dashboard',
       initials: 'M1'
     },
@@ -32,7 +32,7 @@ function Developers() {
       {/* Page Heading */}
       <div className="mb-10">
         <p className="mb-2 text-sm font-medium text-green-400">
-          THE PEOPLE BEHIND TASKFLOW
+          THE PEOPLE BEHIND YourTask
         </p>
 
         <h1 className="mb-3 text-3xl font-bold text-white md:text-4xl">
@@ -40,7 +40,7 @@ function Developers() {
         </h1>
 
         <p className="text-gray-400">
-          Get to know the team who designed and developed TaskFlow.
+          Get to know the team who designed and developed YourTask.
         </p>
       </div>
 
@@ -55,7 +55,7 @@ function Developers() {
         </h2>
 
         <p className="max-w-3xl leading-relaxed text-gray-300">
-          TaskFlow is a To-Do List web application developed
+          YourTask is a To-Do List web application developed
           as part of DCIT 26: Application Development and
           Emerging Technologies. Our team worked together
           to create a responsive and interactive task
@@ -89,7 +89,7 @@ function Developers() {
 
             <div className="border-t border-white/10 pt-5">
               <span className="text-xs text-gray-500">
-                TaskFlow Development Team
+                YourTask Development Team
               </span>
             </div>
           </div>

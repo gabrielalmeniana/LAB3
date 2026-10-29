@@ -85,7 +85,7 @@ function App() {
 
           <div>
             <h1 className="text-xl font-bold tracking-tight">
-              TaskFlow
+              YourTask
             </h1>
             <p className="text-xs text-gray-400">
               Your productivity space

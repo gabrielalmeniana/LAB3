@@ -132,7 +132,7 @@ function App() {
           </p>
 
           <div className="flex h-9 w-9 items-center justify-center rounded-full bg-green-500/20 font-semibold text-green-300">
-            TF
+            YT
           </div>
         </header>
 

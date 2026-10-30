@@ -2,7 +2,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
-function Groups({ groups, addGroup }) {
+function Groups({ groups, addGroup, deleteGroup }) {
   const [groupName, setGroupName] = useState('')
 
   const handleAddGroup = (e) => {
@@ -14,10 +14,21 @@ function Groups({ groups, addGroup }) {
     setGroupName('')
   }
 
+  // DELETE GROUP CONFIRMATION
+  const handleDeleteGroup = (groupId, groupName) => {
+    const confirmDelete = window.confirm(
+      `Are you sure you want to delete "${groupName}" and all its tasks?`
+    )
+
+    if (confirmDelete) {
+      deleteGroup(groupId)
+    }
+  }
+
   return (
     <div className="mx-auto max-w-6xl">
 
-      {/* Page Heading */}
+      {/* PAGE HEADING */}
       <div className="mb-10">
         <p className="mb-2 text-sm font-medium text-green-400">
           ORGANIZE YOUR WORKSPACE
@@ -32,7 +43,7 @@ function Groups({ groups, addGroup }) {
         </p>
       </div>
 
-      {/* Create Group Section */}
+      {/* CREATE GROUP SECTION */}
       <div className="mb-10 rounded-2xl border border-white/10 bg-[#171C2E] p-6 md:p-8">
 
         <h2 className="mb-2 text-xl font-bold text-white">
@@ -64,7 +75,7 @@ function Groups({ groups, addGroup }) {
         </form>
       </div>
 
-      {/* Groups Header */}
+      {/* GROUPS HEADER */}
       <div className="mb-5 flex items-center justify-between">
         <h2 className="text-xl font-bold text-white">
           Your Groups
@@ -75,9 +86,10 @@ function Groups({ groups, addGroup }) {
         </span>
       </div>
 
-      {/* Group Cards */}
+      {/* GROUP CARDS */}
       {groups.length === 0 ? (
         <div className="rounded-2xl border border-dashed border-white/10 bg-[#171C2E] p-12 text-center">
+
           <div className="mb-4 text-4xl">📁</div>
 
           <h3 className="mb-2 text-lg font-semibold text-white">
@@ -87,43 +99,68 @@ function Groups({ groups, addGroup }) {
           <p className="text-sm text-gray-400">
             Create your first group to start organizing tasks.
           </p>
+
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
-          {groups.map((group, index) => (
-            <Link
-              key={group.id}
-              to={`/groups/${group.id}`}
-              className="group rounded-2xl border border-white/10 bg-[#171C2E] p-6 shadow-lg transition-all duration-300 hover:-translate-y-1 hover:border-green-500/50 hover:shadow-green-500/10"
-            >
-              <div className="mb-6 flex items-center justify-between">
 
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-green-500/10 text-2xl text-green-400">
-                  {['📚', '📁', '📝', '📅'][index % 4]}
+          {groups.map((group, index) => (
+            <div
+              key={group.id}
+              className="rounded-2xl border border-white/10 bg-[#171C2E] p-6 shadow-lg transition-all duration-300 hover:-translate-y-1 hover:border-green-500/50 hover:shadow-green-500/10"
+            >
+
+              {/* GROUP INFORMATION */}
+              <Link
+                to={`/groups/${group.id}`}
+                className="group block"
+              >
+
+                <div className="mb-6 flex items-center justify-between">
+
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-green-500/10 text-2xl text-green-400">
+                    {['📚', '📁', '📝', '📅'][index % 4]}
+                  </div>
+
+                  <span className="text-xl text-gray-500 transition group-hover:text-green-400">
+                    ↗
+                  </span>
+
                 </div>
 
-                <span className="text-xl text-gray-500 transition group-hover:text-green-400">
-                  ↗
-                </span>
-              </div>
+                <h3 className="mb-2 break-words text-lg font-bold text-white">
+                  {group.name}
+                </h3>
 
-              <h3 className="mb-2 break-words text-lg font-bold text-white">
-                {group.name}
-              </h3>
+                <p className="text-sm text-gray-400">
+                  Open this group to manage your tasks.
+                </p>
 
-              <p className="text-sm text-gray-400">
-                Open this group to manage your tasks.
-              </p>
+                <div className="mt-6 border-t border-white/10 pt-4">
+                  <span className="text-sm font-medium text-green-400">
+                    View Tasks →
+                  </span>
+                </div>
 
-              <div className="mt-6 border-t border-white/10 pt-4">
-                <span className="text-sm font-medium text-green-400">
-                  View Tasks →
-                </span>
-              </div>
-            </Link>
+              </Link>
+
+              {/* DELETE GROUP BUTTON */}
+              <button
+                type="button"
+                onClick={() =>
+                  handleDeleteGroup(group.id, group.name)
+                }
+                className="mt-4 w-full rounded-xl border border-red-500/20 bg-red-500/10 px-4 py-2.5 text-sm font-medium text-red-400 transition hover:border-red-500/40 hover:bg-red-500/20"
+              >
+                🗑 Delete Group
+              </button>
+
+            </div>
           ))}
+
         </div>
       )}
+
     </div>
   )
 }

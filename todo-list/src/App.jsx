@@ -1,4 +1,4 @@
-//  ROUTE STUFF
+
 import { useState, useEffect } from 'react'
 import { Routes, Route, NavLink } from 'react-router-dom'
 
@@ -7,8 +7,6 @@ import Groups from './pages/Groups'
 import GroupTasks from './pages/GroupTasks'
 import Guide from './pages/Guide'
 import Developers from './pages/Developers'
-// ROUTE STUFF
-
 
 function App() {
   const [tasks, setTasks] = useState(() => {
@@ -29,6 +27,7 @@ function App() {
     localStorage.setItem('todoGroups', JSON.stringify(groups))
   }, [groups])
 
+  // ADD GROUP
   const addGroup = (groupName) => {
     setGroups(prev => [
       ...prev,
@@ -36,6 +35,18 @@ function App() {
     ])
   }
 
+  // DELETE GROUP AND ITS TASKS
+  const deleteGroup = (groupId) => {
+    setGroups(prev =>
+      prev.filter(group => group.id !== groupId)
+    )
+
+    setTasks(prev =>
+      prev.filter(task => task.groupId !== groupId)
+    )
+  }
+
+  // ADD TASK
   const addTask = (taskName, groupId) => {
     setTasks(prev => [
       ...prev,
@@ -48,6 +59,7 @@ function App() {
     ])
   }
 
+  // TOGGLE TASK
   const toggleTask = (taskId) => {
     setTasks(prev =>
       prev.map(task =>
@@ -58,6 +70,7 @@ function App() {
     )
   }
 
+  // DELETE TASK
   const deleteTask = (taskId) => {
     setTasks(prev =>
       prev.filter(task => task.id !== taskId)
@@ -104,7 +117,7 @@ function App() {
                 `flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all ${
                   isActive
                     ? 'bg-green-600 text-white shadow-lg shadow-green-600/20'
-      : 'text-gray-400 hover:bg-green-500/10 hover:text-green-400'
+                    : 'text-gray-400 hover:bg-green-500/10 hover:text-green-400'
                 }`
               }
             >
@@ -138,6 +151,7 @@ function App() {
 
         <main className="mx-auto max-w-7xl p-5 md:p-10">
           <Routes>
+
             <Route
               path="/"
               element={<Dashboard tasks={tasks} />}
@@ -146,7 +160,11 @@ function App() {
             <Route
               path="/groups"
               element={
-                <Groups groups={groups} addGroup={addGroup} />
+                <Groups
+                  groups={groups}
+                  addGroup={addGroup}
+                  deleteGroup={deleteGroup}
+                />
               }
             />
 
@@ -165,6 +183,7 @@ function App() {
 
             <Route path="/guide" element={<Guide />} />
             <Route path="/developers" element={<Developers />} />
+
           </Routes>
         </main>
       </div>

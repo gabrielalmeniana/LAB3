@@ -2,7 +2,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
-function Groups({ groups, addGroup, deleteGroup }) {
+function Groups({ groups, tasks, addGroup, deleteGroup }) {
   const [groupName, setGroupName] = useState('')
 
   const handleAddGroup = (e) => {
@@ -104,59 +104,109 @@ function Groups({ groups, addGroup, deleteGroup }) {
       ) : (
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
 
-          {groups.map((group, index) => (
-            <div
-              key={group.id}
-              className="rounded-2xl border border-white/10 bg-[#171C2E] p-6 shadow-lg transition-all duration-300 hover:-translate-y-1 hover:border-green-500/50 hover:shadow-green-500/10"
-            >
+          {groups.map((group, index) => {
 
-              {/* GROUP INFORMATION */}
-              <Link
-                to={`/groups/${group.id}`}
-                className="group block"
+            // COUNT TASKS FOR THIS GROUP
+            const groupTasks = tasks.filter(
+              task => task.groupId === group.id
+            )
+
+            const totalTasks = groupTasks.length
+
+            const completedTasks = groupTasks.filter(
+              task => task.done
+            ).length
+
+            const pendingTasks = groupTasks.filter(
+              task => !task.done
+            ).length
+
+            return (
+              <div
+                key={group.id}
+                className="rounded-2xl border border-white/10 bg-[#171C2E] p-6 shadow-lg transition-all duration-300 hover:-translate-y-1 hover:border-green-500/50 hover:shadow-green-500/10"
               >
 
-                <div className="mb-6 flex items-center justify-between">
+                {/* GROUP INFORMATION */}
+                <Link
+                  to={`/groups/${group.id}`}
+                  className="group block"
+                >
 
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-green-500/10 text-2xl text-green-400">
-                    {['📚', '📁', '📝', '📅'][index % 4]}
+                  <div className="mb-6 flex items-center justify-between">
+
+                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-green-500/10 text-2xl text-green-400">
+                      {['📚', '📁', '📝', '📅'][index % 4]}
+                    </div>
+
+                    <span className="text-xl text-gray-500 transition group-hover:text-green-400">
+                      ↗
+                    </span>
+
                   </div>
 
-                  <span className="text-xl text-gray-500 transition group-hover:text-green-400">
-                    ↗
-                  </span>
+                  <h3 className="mb-2 break-words text-lg font-bold text-white">
+                    {group.name}
+                  </h3>
 
-                </div>
+                  <p className="text-sm text-gray-400">
+                    Open this group to manage your tasks.
+                  </p>
 
-                <h3 className="mb-2 break-words text-lg font-bold text-white">
-                  {group.name}
-                </h3>
+                  {/* TASK COUNTS */}
+                  <div className="mt-5 grid grid-cols-3 gap-2">
 
-                <p className="text-sm text-gray-400">
-                  Open this group to manage your tasks.
-                </p>
+                    <div className="rounded-xl border border-white/10 bg-[#0B0F19] p-3 text-center">
+                      <p className="text-xl font-bold text-white">
+                        {totalTasks}
+                      </p>
+                      <p className="mt-1 text-xs text-gray-400">
+                        Total
+                      </p>
+                    </div>
 
-                <div className="mt-6 border-t border-white/10 pt-4">
-                  <span className="text-sm font-medium text-green-400">
-                    View Tasks →
-                  </span>
-                </div>
+                    <div className="rounded-xl border border-green-500/20 bg-green-500/10 p-3 text-center">
+                      <p className="text-xl font-bold text-green-400">
+                        {completedTasks}
+                      </p>
+                      <p className="mt-1 text-xs text-green-300">
+                        Done
+                      </p>
+                    </div>
 
-              </Link>
+                    <div className="rounded-xl border border-yellow-500/20 bg-yellow-500/10 p-3 text-center">
+                      <p className="text-xl font-bold text-yellow-400">
+                        {pendingTasks}
+                      </p>
+                      <p className="mt-1 text-xs text-yellow-300">
+                        Not Done
+                      </p>
+                    </div>
 
-              {/* DELETE GROUP BUTTON */}
-              <button
-                type="button"
-                onClick={() =>
-                  handleDeleteGroup(group.id, group.name)
-                }
-                className="mt-4 w-full rounded-xl border border-red-500/20 bg-red-500/10 px-4 py-2.5 text-sm font-medium text-red-400 transition hover:border-red-500/40 hover:bg-red-500/20"
-              >
-                🗑 Delete Group
-              </button>
+                  </div>
 
-            </div>
-          ))}
+                  <div className="mt-6 border-t border-white/10 pt-4">
+                    <span className="text-sm font-medium text-green-400">
+                      View Tasks →
+                    </span>
+                  </div>
+
+                </Link>
+
+                {/* DELETE GROUP BUTTON */}
+                <button
+                  type="button"
+                  onClick={() =>
+                    handleDeleteGroup(group.id, group.name)
+                  }
+                  className="mt-4 w-full rounded-xl border border-red-500/20 bg-red-500/10 px-4 py-2.5 text-sm font-medium text-red-400 transition hover:border-red-500/40 hover:bg-red-500/20"
+                >
+                  🗑 Delete Group
+                </button>
+
+              </div>
+            )
+          })}
 
         </div>
       )}

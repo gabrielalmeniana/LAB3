@@ -1,5 +1,6 @@
 
-import { useState, useEffect } from 'react'
+import UserProfile from './components/UserProfile'
+
 import { Routes, Route, NavLink } from 'react-router-dom'
 
 import Dashboard from './pages/Dashboard'
@@ -8,74 +9,18 @@ import GroupTasks from './pages/GroupTasks'
 import Guide from './pages/Guide'
 import Developers from './pages/Developers'
 
+import useTaskStore from './store/taskStore'
+
 function App() {
-  const [tasks, setTasks] = useState(() => {
-    const savedTasks = localStorage.getItem('todoTasks')
-    return savedTasks ? JSON.parse(savedTasks) : []
-  })
+  const tasks = useTaskStore(state => state.tasks)
+  const groups = useTaskStore(state => state.groups)
 
-  const [groups, setGroups] = useState(() => {
-    const savedGroups = localStorage.getItem('todoGroups')
-    return savedGroups ? JSON.parse(savedGroups) : []
-  })
-
-  useEffect(() => {
-    localStorage.setItem('todoTasks', JSON.stringify(tasks))
-  }, [tasks])
-
-  useEffect(() => {
-    localStorage.setItem('todoGroups', JSON.stringify(groups))
-  }, [groups])
-
-  // ADD GROUP
-  const addGroup = (groupName) => {
-    setGroups(prev => [
-      ...prev,
-      { id: crypto.randomUUID(), name: groupName }
-    ])
-  }
-
-  // DELETE GROUP AND ITS TASKS
-  const deleteGroup = (groupId) => {
-    setGroups(prev =>
-      prev.filter(group => group.id !== groupId)
-    )
-
-    setTasks(prev =>
-      prev.filter(task => task.groupId !== groupId)
-    )
-  }
-
-  // ADD TASK
-  const addTask = (taskName, groupId) => {
-    setTasks(prev => [
-      ...prev,
-      {
-        id: crypto.randomUUID(),
-        name: taskName,
-        groupId,
-        done: false
-      }
-    ])
-  }
-
-  // TOGGLE TASK
-  const toggleTask = (taskId) => {
-    setTasks(prev =>
-      prev.map(task =>
-        task.id === taskId
-          ? { ...task, done: !task.done }
-          : task
-      )
-    )
-  }
-
-  // DELETE TASK
-  const deleteTask = (taskId) => {
-    setTasks(prev =>
-      prev.filter(task => task.id !== taskId)
-    )
-  }
+  // GET FUNCTIONS FROM ZUSTAND
+  const addGroup = useTaskStore(state => state.addGroup)
+  const deleteGroup = useTaskStore(state => state.deleteGroup)
+  const addTask = useTaskStore(state => state.addTask)
+  const toggleTask = useTaskStore(state => state.toggleTask)
+  const deleteTask = useTaskStore(state => state.deleteTask)
 
   const navigation = [
     { name: 'Dashboard', path: '/', icon: '◈' },
@@ -140,14 +85,12 @@ function App() {
       {/* MAIN CONTENT */}
       <div className="min-w-0 flex-1">
         <header className="flex items-center justify-between border-b border-white/10 px-6 py-5 md:px-10">
-          <p className="text-sm text-gray-400">
-            Workspace / Task Management
-          </p>
+       <p className="text-sm text-gray-400">
+       Workspace / Task Management
+      </p>
 
-          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-green-500/20 font-semibold text-green-300">
-            YT
-          </div>
-        </header>
+  <UserProfile />
+</header>
 
         <main className="mx-auto max-w-7xl p-5 md:p-10">
           <Routes>
@@ -162,6 +105,7 @@ function App() {
               element={
                 <Groups
                   groups={groups}
+                  tasks={tasks}
                   addGroup={addGroup}
                   deleteGroup={deleteGroup}
                 />

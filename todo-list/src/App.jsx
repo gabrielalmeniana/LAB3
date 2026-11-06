@@ -8,6 +8,7 @@ import Groups from './pages/Groups'
 import GroupTasks from './pages/GroupTasks'
 import Guide from './pages/Guide'
 import Developers from './pages/Developers'
+import UserInformation from './pages/UserInformation'
 
 import useTaskStore from './store/taskStore'
 
@@ -22,9 +23,11 @@ function App() {
   const toggleTask = useTaskStore(state => state.toggleTask)
   const deleteTask = useTaskStore(state => state.deleteTask)
 
+  // SIDEBAR NAVIGATION
   const navigation = [
     { name: 'Dashboard', path: '/', icon: '◈' },
     { name: 'Task Groups', path: '/groups', icon: '▦' },
+    { name: 'User Information', path: '/users', icon: '♙' },
     { name: 'User Guide', path: '/guide', icon: '◎' },
     { name: 'Developers', path: '/developers', icon: '♧' }
   ]
@@ -52,7 +55,7 @@ function App() {
         </div>
 
         {/* NAVIGATION */}
-        <nav className="grid grid-cols-2 gap-2 sm:grid-cols-4 md:grid-cols-1">
+        <nav className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-1">
           {navigation.map(item => (
             <NavLink
               key={item.path}
@@ -72,6 +75,7 @@ function App() {
           ))}
         </nav>
 
+        {/* SIDEBAR MESSAGE */}
         <div className="mt-10 hidden rounded-xl border border-green-500/20 bg-violet-500/10 p-4 md:block">
           <p className="text-sm font-semibold text-green-300">
             Stay organized
@@ -80,26 +84,31 @@ function App() {
             Small steps lead to big accomplishments.
           </p>
         </div>
+
       </aside>
 
       {/* MAIN CONTENT */}
       <div className="min-w-0 flex-1">
-        <header className="flex items-center justify-between border-b border-white/10 px-6 py-5 md:px-10">
-       <p className="text-sm text-gray-400">
-       Workspace / Task Management
-      </p>
 
-  <UserProfile />
-</header>
+        <header className="flex items-center justify-between border-b border-white/10 px-6 py-5 md:px-10">
+          <p className="text-sm text-gray-400">
+            Workspace / Task Management
+          </p>
+
+          <UserProfile />
+        </header>
 
         <main className="mx-auto max-w-7xl p-5 md:p-10">
+
           <Routes>
 
+            {/* DASHBOARD */}
             <Route
               path="/"
               element={<Dashboard tasks={tasks} />}
             />
 
+            {/* TASK GROUPS */}
             <Route
               path="/groups"
               element={
@@ -112,6 +121,7 @@ function App() {
               }
             />
 
+            {/* GROUP TASKS */}
             <Route
               path="/groups/:groupId"
               element={
@@ -125,10 +135,26 @@ function App() {
               }
             />
 
-            <Route path="/guide" element={<Guide />} />
-            <Route path="/developers" element={<Developers />} />
+            {/* USER INFORMATION */}
+            <Route
+              path="/users"
+              element={<UserInformation />}
+            />
+
+            {/* USER GUIDE */}
+            <Route
+              path="/guide"
+              element={<Guide />}
+            />
+
+            {/* DEVELOPERS */}
+            <Route
+              path="/developers"
+              element={<Developers />}
+            />
 
           </Routes>
+
         </main>
       </div>
     </div>
